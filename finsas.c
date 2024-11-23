@@ -70,6 +70,33 @@ void AjouterTache() {
         printf("La liste de taches est pleine. Impossible d'ajouter plus de taches.\n");
     }
 }
+void AfficherListeTaches() {
+    int i;
+	if(countTaches > 0){
+    printf("----------------Liste des taches :------------------\n");
+    for (i = 0; i < countTaches; i++) {
+        printf("----Tache %d :\n", i + 1);
+        printf("Titre : %s\n", ListeTaches[i].titre);
+        printf("Description : %s\n", ListeTaches[i].Description);
+        printf("Date : %d-%d-%d\n", ListeTaches[i].Date.jours, ListeTaches[i].Date.mois, ListeTaches[i].Date.annee);
+
+        switch (ListeTaches[i].Priorite) {
+            case basse:
+                printf("Priorite : basse\n");
+                break;
+            
+            case haute:
+                printf("Priorite : haute\n");
+                break;
+            default:
+                printf("Priorite inconnue\n");
+        }
+        printf("\n");
+    }
+    }else{
+    	printf("Aucune tache a afficher!\n");
+}
+}
 int main() {
     int choix;
     do {
