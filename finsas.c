@@ -17,7 +17,18 @@ typedef struct {
 Tache ListeTaches[MAX_TACHES];
 int countTaches = 0;
 
-
+int Vdate(int jours, int mois, int annee) {
+    if (jours < 1 || jours > 31) {
+        return 0; 
+    }
+    if (mois < 1 || mois > 12) {
+        return 0; 
+    }
+    if (annee < 2024) {
+        return 0;
+    }
+    return 1; 
+}
 
 void AjouterTache() {
     if (countTaches < MAX_TACHES) {
@@ -28,7 +39,7 @@ void AjouterTache() {
         printf("Donner la description de la tache : ");
         scanf(" %[^\n]s", nouvelleTache.Description);
 
-        
+        while (1) {
             printf("Donner la date de la tache : \n");
             printf(" Date jours: ");
             scanf("%d", &nouvelleTache.Date.jours);
@@ -36,16 +47,21 @@ void AjouterTache() {
             scanf("%d", &nouvelleTache.Date.mois);
             printf(" Date annee: ");
             scanf("%d", &nouvelleTache.Date.annee);
-            
-       
+            if (Vdate(nouvelleTache.Date.jours, nouvelleTache.Date.mois, nouvelleTache.Date.annee)) {
+                break;
+            } else {
+                printf("Date invalide. Veuillez entrer une date valide.\n");
+            }
+        }
 
-       
-            printf("Donner la prioritee de la tache (0: basse / 1: haute) : ");
+        while (1) {
+            printf("Donner la prioritee de la tache (0: low / 1: high) : ");
             scanf("%d", &nouvelleTache.Priorite);
             if (nouvelleTache.Priorite == 0 || nouvelleTache.Priorite == 1) {
-               
+                break; 
             }
-           
+            printf("Choix invalide. Veuillez entrer 0 ou 1.\n");
+        }
 
         ListeTaches[countTaches++] = nouvelleTache;
         printf("Tache ajoutee avec succes!\n");
@@ -62,7 +78,7 @@ void AfficherListeTaches() {
             printf("Titre : %s\n", ListeTaches[i].titre);
             printf("Description : %s\n", ListeTaches[i].Description);
             printf("Date : %d-%d-%d\n", ListeTaches[i].Date.jours, ListeTaches[i].Date.mois, ListeTaches[i].Date.annee);
-            printf("Priorite : %s\n", (ListeTaches[i].Priorite == 0) ? "basse" : "haute");
+            printf("Priorite : %s\n", (ListeTaches[i].Priorite == 0) ? "low" : "high");
             printf("\n");
         }
     } else {
@@ -70,13 +86,59 @@ void AfficherListeTaches() {
     }
 }
 
+void ModifierTache() {
+    if (countTaches > 0) {
+        int numeroTache;
+        printf("Donner le numero de la tache a modifier: ");
+        scanf("%d", &numeroTache);
+        if (numeroTache > 0 && numeroTache <= countTaches) {
+            Tache *modifierTache = &ListeTaches[numeroTache - 1];
+            printf("Entrez la nouvelle titre de la tache : ");
+            scanf(" %[^\n]s", modifierTache->titre);
+
+            printf("Entrez la nouvelle description de la tache : ");
+            scanf(" %[^\n]s", modifierTache->Description);
+
+            while (1) {
+                printf("Entrez la nouvelle date de la tache : \n");
+                printf(" Date jours: ");
+                scanf("%d", &modifierTache->Date.jours);
+                printf(" Date mois: ");
+                scanf("%d", &modifierTache->Date.mois);
+                printf(" Date annee: ");
+                scanf("%d", &modifierTache->Date.annee);
+                if (Vdate(modifierTache->Date.jours, modifierTache->Date.mois, modifierTache->Date.annee)) {
+                    break;
+                } else {
+                    printf("Date invalide. Veuillez entrer une date valide.\n");
+                }
+            }
+
+            while (1) {
+                printf("Entrez la nouvelle prioritee de la tache (0: low, 1: high) : ");
+                scanf("%d", &modifierTache->Priorite);
+                if (modifierTache->Priorite == 0 || modifierTache->Priorite == 1) {
+                    break; 
+                }
+                printf("Choix invalide. Veuillez entrer 0 ou 1.\n");
+            }
+
+            printf("Tache modifiee avec succes!\n");
+        } else {
+            printf("Numero de tache invalide.\n");
+        }
+    } else {
+        printf("Aucune tache a modifier!\n");
+    }
+}
 int main() {
     int choix;
     do {
         printf("\n-----------------------Menu:---------------------\n");
         printf("1. Ajouter une tache\n");
         printf("2. Afficher la liste des taches\n");
-        
+        printf("3. Modifier une tache\n");
+        printf("0. Quitter\n");
         printf("Choix : ");
         scanf("%d", &choix);
         switch (choix) {
@@ -86,13 +148,15 @@ int main() {
             case 2:
                 AfficherListeTaches();
                 break;
-            
-                 
-                
-            
-           
+            case 3:
+                ModifierTache();
+                break;
+         
+            case 0:
+                printf("Programme termine!\n");
+                break;
             default:
-                printf("Choix invalide. Veuillez entrer un nombre entre 0 et 5.\n");
+                printf("Choix invalide. Veuillez entrer un nombre entre 0 et 3.\n");
         }
     } while (choix != 0);
     return 0;
