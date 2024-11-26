@@ -131,6 +131,27 @@ void ModifierTache() {
         printf("Aucune tache a modifier!\n");
     }
 }
+void SupprimerTache() {
+    if (countTaches > 0) {
+        int i;
+        int numeroTache;
+        printf("Entrez le numero de la tache a supprimer : ");
+        scanf("%d", &numeroTache);
+
+        if (numeroTache > 0 && numeroTache <= countTaches) {
+            for (i = numeroTache - 1; i < countTaches - 1; i++) {
+                ListeTaches[i] = ListeTaches[i + 1];
+            }
+
+            countTaches--;
+            printf("Tache supprimee avec succes!\n");
+        } else {
+            printf("Numero de tache invalide.\n");
+        }
+    } else {
+        printf("Aucune tache a supprimer!\n");
+    }
+}
 int main() {
     int choix;
     do {
@@ -138,6 +159,7 @@ int main() {
         printf("1. Ajouter une tache\n");
         printf("2. Afficher la liste des taches\n");
         printf("3. Modifier une tache\n");
+        printf("4. Supprimer une tache\n");
         printf("0. Quitter\n");
         printf("Choix : ");
         scanf("%d", &choix);
@@ -151,6 +173,9 @@ int main() {
             case 3:
                 ModifierTache();
                 break;
+            case 4:
+                SupprimerTache();
+                break ;    
          
             case 0:
                 printf("Programme termine!\n");
