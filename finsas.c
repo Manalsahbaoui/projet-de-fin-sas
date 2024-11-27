@@ -131,6 +131,7 @@ void ModifierTache() {
         printf("Aucune tache a modifier!\n");
     }
 }
+
 void SupprimerTache() {
     if (countTaches > 0) {
         int i;
@@ -152,6 +153,26 @@ void SupprimerTache() {
         printf("Aucune tache a supprimer!\n");
     }
 }
+
+void FiltrerParPriorite(int priorite) {
+    int i;
+    if (countTaches > 0) {
+        printf("Taches avec priorite %d :\n", priorite);
+        for (i = 0; i < countTaches; i++) {
+            if (ListeTaches[i].Priorite == priorite) {
+                printf("-----Tache %d :\n", i + 1);
+                printf("Titre : %s\n", ListeTaches[i].titre);
+                printf("Description : %s\n", ListeTaches[i].Description);
+                printf("Date : %d-%d-%d\n", ListeTaches[i].Date.jours, ListeTaches[i].Date.mois, ListeTaches[i].Date.annee);
+                printf("Priorite : %s\n", (ListeTaches[i].Priorite == 0) ? "low" : "high");
+                printf("\n");
+            }
+        }
+    } else {
+        printf("Aucune tache a afficher!\n");
+    }
+}
+
 int main() {
     int choix;
     do {
@@ -160,6 +181,7 @@ int main() {
         printf("2. Afficher la liste des taches\n");
         printf("3. Modifier une tache\n");
         printf("4. Supprimer une tache\n");
+        printf("5. Filtrer par priorite\n");
         printf("0. Quitter\n");
         printf("Choix : ");
         scanf("%d", &choix);
@@ -175,13 +197,24 @@ int main() {
                 break;
             case 4:
                 SupprimerTache();
-                break ;    
-         
+                break;
+            case 5: {
+                int priorite;
+                while (1) {
+                    printf("Entrez la priorite (0: basse, 1: haute) : ");
+                    scanf("%d", &priorite);
+                    if (priorite == 0 || priorite == 1) {
+                        FiltrerParPriorite(priorite);
+                        break; 
+                    }
+                    printf("Choix invalide. Veuillez entrer 0 ou 1.\n");
+                }
+            } break;
             case 0:
                 printf("Programme termine!\n");
                 break;
             default:
-                printf("Choix invalide. Veuillez entrer un nombre entre 0 et 3.\n");
+                printf("Choix invalide. Veuillez entrer un nombre entre 0 et 5.\n");
         }
     } while (choix != 0);
     return 0;
